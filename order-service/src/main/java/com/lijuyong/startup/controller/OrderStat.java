@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by john on 2017/2/24.
  */
 @RestController
-@RequestMapping("/order-service/stat")
+@RequestMapping("/stat")
 public class OrderStat {
     @RequestMapping("/count")
     public int count(){
