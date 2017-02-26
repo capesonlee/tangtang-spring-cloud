@@ -5,7 +5,7 @@
 
 <mapper namespace="com.lijuyong.startup.dao.mapper.SeqMapper">
     <insert id="getUserNo" parameterType="SequenceNoDO">
-        <selectKey resultType="Integer" order="AFTER" keyProperty="sequenceNoDO.id">
+        <selectKey resultType="Long" order="AFTER" keyProperty="sequenceNoDO.id">
             SELECT LAST_INSERT_ID() as id;
         </selectKey>
         REPLACE INTO user_seq(stub) VALUES ('a');

@@ -9,5 +9,5 @@ import org.apache.ibatis.annotations.Param;
  */
 @Mapper
 public interface SeqMapper {
-    Integer getUserNo(@Param("sequenceNoDO")SequenceNoDO sequenceNoDO);
+    Long getUserNo(@Param("sequenceNoDO")SequenceNoDO sequenceNoDO);
 }

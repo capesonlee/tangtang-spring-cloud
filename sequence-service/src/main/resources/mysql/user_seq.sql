@@ -1,0 +1,11 @@
+CREATE TABLE `user_seq` (
+	`id` INT(12) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT COMMENT '种子',
+	`stub` CHAR(1) NOT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `stub` (`stub`)
+)
+COMMENT='用户id 生成序列种子表'
+COLLATE='utf8_general_ci'
+ENGINE=MyISAM
+AUTO_INCREMENT=196
+;

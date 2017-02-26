@@ -5,6 +5,7 @@ import com.lijuyong.startup.dao.model.SequenceNoDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sun.rmi.runtime.Log;
 
 /**
  * Created by john on 2017/2/26.
@@ -15,9 +16,9 @@ public class SequenceController {
     @Autowired
     private SeqMapper seqMapper;
     @RequestMapping("/user")
-    public int userNo(){
+    public Long userNo(){
         SequenceNoDO sequenceNoDO = new SequenceNoDO();
-        Integer row = seqMapper.getUserNo(sequenceNoDO);
+        Long row = seqMapper.getUserNo(sequenceNoDO);
         return sequenceNoDO.getId();
 
     }
