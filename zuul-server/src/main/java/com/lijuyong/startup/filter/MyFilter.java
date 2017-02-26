@@ -4,38 +4,38 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 /**
  * Created by john on 2017/2/25.
  */
-
+@Service
 public class MyFilter extends ZuulFilter {
-   // private Logger logger;
-    public MyFilter(){
-       // logger = LoggerFactory.getLogger(this.getClass());
+    private Logger mylog = LoggerFactory.getLogger(this.getClass());
+
+    public MyFilter() {
+        mylog.error("这是一个构造函数");
 
     }
 
     @Override
     public String filterType() {
-       // logger.error("pre");
+
         return "pre";
     }
 
     @Override
     public int filterOrder() {
-       // logger.error("999");
+        mylog.error("999");
         return 999;
     }
+
     @Override
     public boolean shouldFilter() {
         RequestContext ctx = RequestContext.getCurrentContext();
         String requestUri = ctx.getRequest().getRequestURI();
-       // logger.error("这是啥");
-       // logger.error(requestUri);
-        System.out.println(requestUri);
+
+        mylog.error("shouldFilter "+ requestUri);
 
         return requestUri.startsWith("/user-service");
 
@@ -45,6 +45,7 @@ public class MyFilter extends ZuulFilter {
     public Object run() {
         RequestContext ctx = RequestContext.getCurrentContext();
         ctx.addZuulRequestHeader("payload.trace", "true");
+        mylog.error("run ");
         return null;
     }
 }

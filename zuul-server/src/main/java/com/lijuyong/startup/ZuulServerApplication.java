@@ -19,9 +19,9 @@ public class ZuulServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ZuulServerApplication.class, args);
 	}
-	@Bean
-	public ZuulFilter securityFilter(){
-
-	    return  new MyFilter();
-    }
+//	@Bean
+//	public ZuulFilter securityFilter(){
+//
+//	    return  new MyFilter();
+//    }
 }
