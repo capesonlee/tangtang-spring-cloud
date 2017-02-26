@@ -7,5 +7,5 @@ CREATE TABLE `user_seq` (
 COMMENT='用户id 生成序列种子表'
 COLLATE='utf8_general_ci'
 ENGINE=MyISAM
-AUTO_INCREMENT=196
+AUTO_INCREMENT=196 #根据需要修改
 ;
