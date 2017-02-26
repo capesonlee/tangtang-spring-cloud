@@ -5,7 +5,7 @@ package com.lijuyong.startup.dao.model;
  */
 public class SequenceNoDO {
     private  Integer id;
-    private String stub;
+    //private String stub;
 
     public Integer getId(){
         return id;
@@ -13,12 +13,12 @@ public class SequenceNoDO {
     public void setId(Integer id){
         this.id = id;
     }
-    public  String getStub(){
-        return  stub;
-    }
+//    public  String getStub(){
+//        return  stub;
+//    }
 
     public SequenceNoDO(){
-        stub="a";
+        //stub="a";
     }
 
 }

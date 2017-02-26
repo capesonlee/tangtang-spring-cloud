@@ -8,6 +8,6 @@
         <selectKey resultType="Integer" order="AFTER" keyProperty="sequenceNoDO.id">
             SELECT LAST_INSERT_ID() as id;
         </selectKey>
-        REPLACE INTO user_seq(stub) VALUES (#{sequenceNoDO.stub});
+        REPLACE INTO user_seq(stub) VALUES ('a');
     </insert>
 </mapper>
