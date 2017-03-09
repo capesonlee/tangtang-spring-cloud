@@ -40,10 +40,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        return new BCryptPasswordEncoder();
         return new BCryptPasswordEncoder();
     }
-//    @Bean
-//    public JwtAuthenticationFilter authenticationTokenFilterBean() throws Exception {
-//        return new JwtAuthenticationFilter();
-//    }
+
+    @Bean
+    public JwtAuthenticationFilter authenticationTokenFilterBean() throws Exception {
+        return new JwtAuthenticationFilter();
+    }
     @Override
     public void configure(WebSecurity webSecurity) {
 
@@ -74,11 +75,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/open").permitAll()
 
                 .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
-              //  .antMatchers(HttpMethod.POST, "/**").permitAll() //debug 时, 不用对 Authorization 作验证
                 .anyRequest().authenticated();
         // Custom JWT based security filter
-//        httpSecurity
-//                .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity
+                .addFilterBefore(authenticationTokenFilterBean(),
+                        UsernamePasswordAuthenticationFilter.class);
         // disable page caching
         System.out.println("应该产生了作用才对");
         httpSecurity.headers().cacheControl();
