@@ -1,4 +1,4 @@
-package com.lijuyong.startup.controller;
+package com.lijuyong.startup.web;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
