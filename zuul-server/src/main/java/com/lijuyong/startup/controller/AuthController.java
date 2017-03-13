@@ -1,5 +1,6 @@
 package com.lijuyong.startup.controller;
 
+import com.lijuyong.startup.security.JwtUser;
 import com.lijuyong.startup.security.JwtUtil;
 import com.lijuyong.startup.security.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +24,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/auth")
-public class LoginController {
+public class AuthController {
     private String tokenHeader = "Authorization";
     @Value("${jwt.secret}")
     private String secret;
@@ -39,7 +39,7 @@ public class LoginController {
     public static final String loginpwd = "$2a$10$qsYvMwvld7FMGKp45AQjpun6otC8b.eFN7Be5KAr0vuEQWgT.uvgm";
     @RequestMapping(method = RequestMethod.POST, path = "/login", produces = "application/json;charset=utf8")
     public Map<String, String> login(@RequestParam(value = "username") String username, @RequestParam(value = "passwd") String passwd) {
-        if (!LoginController.loginname.equals(username)) {
+        if (!AuthController.loginname.equals(username)) {
             throw new BadCredentialsException("invalid key");
         }
         // Perform the security
@@ -53,12 +53,13 @@ public class LoginController {
         // Reload password post-security so we can generate token
        // final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-        User user = new User();
-        user.setUsername(username);
-        user.setId(123456789L);
-        user.setRole("admin");
+        JwtUser jwtUser = new JwtUser();
+        jwtUser.setName("张三丰");
+        jwtUser.setId(123456789L);
+        jwtUser.setRoleId(9L);
+        jwtUser.setOrgId(123L);
         // Perform the security
-        final String token = jwtTokenUtil.generateToken(user);
+        final String token = jwtTokenUtil.generateToken(jwtUser);
         // Return the token
         // return ResponseEntity.ok(new JwtAuthenticationResponse(token));
         HashMap<String, String> r = new HashMap<>();

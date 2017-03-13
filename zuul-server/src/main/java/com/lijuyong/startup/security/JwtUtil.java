@@ -4,8 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.impl.crypto.JwtSignatureValidator;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 
@@ -14,6 +14,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class JwtUtil {
+
+    private static final String ID_KEY_NAME ="id";
+    private static final String ORG_ID_KEY_NAME ="org";
+    private static final String ROLE_ID_KEY_NAME ="role";
+
+
     @Value("${jwt.secret}")
     private String secret;
 
@@ -24,19 +30,23 @@ public class JwtUtil {
      * @param token the JWT token to parse
      * @return the User object extracted from specified token or null if a token is invalid.
      */
-    public User parseToken(String token) {
+    public JwtUser parseToken(String token) {
         try {
             Claims body = Jwts.parser()
                     .setSigningKey(secret)
                     .parseClaimsJws(token)
                     .getBody();
 
-            User u = new User();
-            u.setUsername(body.getSubject());
-            u.setId(Long.parseLong((String) body.get("userId")));
-            u.setRole((String) body.get("role"));
 
-            return u;
+            JwtUser jwtUser = new JwtUser();
+            jwtUser.setName(body.getSubject());
+            jwtUser.setId(Long.parseLong((String) body.get(ID_KEY_NAME)));
+            jwtUser.setRoleId(Long.parseLong((String)body.get(ROLE_ID_KEY_NAME)));
+            jwtUser.setOrgId(Long.parseLong((String)body.get(ORG_ID_KEY_NAME)));
+
+
+
+            return jwtUser;
 
         } catch (JwtException | ClassCastException e) {
             return null;
@@ -47,13 +57,16 @@ public class JwtUtil {
      * Generates a JWT token containing username as subject, and userId and role as additional claims. These properties are taken from the specified
      * User object. Tokens validity is infinite.
      *
-     * @param u the user for which the token will be generated
+     * @param jwtUser the user for which the token will be generated
      * @return the JWT token
      */
-    public String generateToken(User u) {
-        Claims claims = Jwts.claims().setSubject(u.getUsername());
-        claims.put("userId", u.getId() + "");
-        claims.put("role", u.getRole());
+    public String generateToken(JwtUser jwtUser) {
+
+        Claims claims = Jwts.claims().setSubject(jwtUser.getName());
+        claims.put(ID_KEY_NAME, jwtUser.getId() + "");
+        claims.put(ROLE_ID_KEY_NAME, jwtUser.getRoleId()+"");
+        claims.put(ORG_ID_KEY_NAME, jwtUser.getOrgId()+"");
+
 
         return Jwts.builder()
                 .setClaims(claims)

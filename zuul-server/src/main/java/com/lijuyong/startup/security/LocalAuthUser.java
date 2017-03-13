@@ -4,7 +4,7 @@ package com.lijuyong.startup.security;
  * Created by john on 2017/3/8.
  */
 
-import com.lijuyong.startup.controller.LoginController;
+import com.lijuyong.startup.controller.AuthController;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,12 +17,10 @@ public class LocalAuthUser implements UserDetails {
     private final String username;
     private final String password;
 
-    public LocalAuthUser(
-            String username
-    ) {
+    public LocalAuthUser( String username,String password) {
 
         this.username = username;
-        this.password = LoginController.loginpwd;
+        this.password = password;
 
     }
 

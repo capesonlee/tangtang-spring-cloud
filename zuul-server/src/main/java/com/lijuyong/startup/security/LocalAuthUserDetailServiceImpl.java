@@ -1,6 +1,6 @@
 package com.lijuyong.startup.security;
 
-import com.lijuyong.startup.controller.LoginController;
+import com.lijuyong.startup.controller.AuthController;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,18 +11,15 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class LocalAuthUserDetailServiceImpl implements UserDetailsService {
-    //    @Autowired
-//    private UserRepository userRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//     User user = userRepository.findByUsername(username);
-        //判断一个用户是否存在,此处 还未从数据库查询, 简单测试
 
-        if (!LoginController.loginname.equals(username)) {
+        //调用user-service的接口获取用户的认证信息
+        if (!AuthController.loginname.equals(username)) {
             throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
         } else {
-            return new LocalAuthUser(username);
-//            return JwtUserFactory.create(user);
+            return new LocalAuthUser(username,AuthController.loginpwd);
         }
     }
 }
