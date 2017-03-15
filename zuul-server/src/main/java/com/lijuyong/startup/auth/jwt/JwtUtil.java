@@ -1,10 +1,7 @@
 package com.lijuyong.startup.auth.jwt;
 
 import com.lijuyong.startup.auth.model.JwtUser;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +19,7 @@ public class JwtUtil {
     private static final String ROLE_ID_KEY_NAME ="role";
     private static final Long NORMAL_TOKEN_TTL = 30*60*1000L; //30分钟
     private static final Long TEMP_TOKEN_TTL = 5*60*1000L;
+    private static final Long SKEW_TOKEN_TTL = 5*60*1000L;
 
 
     @Value("${jwt.secret}")
@@ -35,11 +33,13 @@ public class JwtUtil {
      * @return the User object extracted from specified token or null if a token is invalid.
      */
     public JwtUser parseToken(String token) {
-        try {
+
             Claims body = Jwts.parser()
+                    .setAllowedClockSkewSeconds(SKEW_TOKEN_TTL)
                     .setSigningKey(secret)
                     .parseClaimsJws(token)
                     .getBody();
+
 
 
             JwtUser jwtUser = new JwtUser();
@@ -47,14 +47,9 @@ public class JwtUtil {
             jwtUser.setId(Long.parseLong((String) body.get(ID_KEY_NAME)));
             jwtUser.setRoleId(Long.parseLong((String)body.get(ROLE_ID_KEY_NAME)));
             jwtUser.setOrgId(Long.parseLong((String)body.get(ORG_ID_KEY_NAME)));
-
-
-
             return jwtUser;
 
-        } catch (JwtException | ClassCastException e) {
-            return null;
-        }
+
     }
 
     /**
@@ -79,6 +74,7 @@ public class JwtUtil {
 
         return Jwts.builder()
                 .setClaims(claims)
+                //.compressWith(CompressionCodecs.DEFLATE)
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
