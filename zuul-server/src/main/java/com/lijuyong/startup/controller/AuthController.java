@@ -40,44 +40,10 @@ public class AuthController {
     public static final String loginname = "abcefg";
     public static final String loginpwd_raw = "111";
     public static final String loginpwd = "$2a$10$qsYvMwvld7FMGKp45AQjpun6otC8b.eFN7Be5KAr0vuEQWgT.uvgm";
-    @RequestMapping(method = RequestMethod.POST, path = "/login", produces = "application/json;charset=utf8")
-    public Map<String, String> login(@RequestParam(value = "username") String username, @RequestParam(value = "passwd") String passwd) {
-        if (!AuthController.loginname.equals(username)) {
-            throw new BadCredentialsException("invalid key");
-        }
-        // Perform the auth
-        final Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        username,
-                        passwd
-                )
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        // Reload password post-auth so we can generate token
-       // final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-        JwtUser jwtUser = new JwtUser();
-        jwtUser.setName("张三丰");
-        jwtUser.setId(123456789L);
-        jwtUser.setRoleId(9L);
-        jwtUser.setOrgId(123L);
-        // Perform the auth
-        final String token = jwtTokenUtil.generateToken(jwtUser);
-        // Return the token
-        // return ResponseEntity.ok(new JwtAuthenticationResponse(token));
-        HashMap<String, String> r = new HashMap<>();
-        r.put("token", token);
-        return r;
-    }
-
-//    @RequestMapping(method = RequestMethod.POST, path = "/signin")
-//    public String signin(){
-//
-//        logger.info("here is we signin");
-//        return "hello john";
-//    }
     @RequestMapping("/open")
     public String open(){
-        return "奇怪啦";
+
+        return "这是一个开放测试接口";
     }
 }
