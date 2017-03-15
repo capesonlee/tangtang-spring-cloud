@@ -1,10 +1,9 @@
-package com.lijuyong.startup.security;
+package com.lijuyong.startup.auth.model;
 
 /**
  * Created by john on 2017/3/8.
  */
 
-import com.lijuyong.startup.controller.AuthController;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,13 +15,16 @@ import java.util.Collection;
 public class LocalAuthUser implements UserDetails {
     private final String username;
     private final String password;
+    private final Long userId;
 
-    public LocalAuthUser( String username,String password) {
+    public LocalAuthUser( String username,String password,Long userId) {
 
         this.username = username;
         this.password = password;
+        this.userId = userId;
 
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -58,4 +60,10 @@ public class LocalAuthUser implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+
 }

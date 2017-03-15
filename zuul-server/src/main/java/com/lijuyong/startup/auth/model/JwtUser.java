@@ -1,4 +1,4 @@
-package com.lijuyong.startup.security;
+package com.lijuyong.startup.auth.model;
 
 /**
  * Created by john on 2017/3/9.

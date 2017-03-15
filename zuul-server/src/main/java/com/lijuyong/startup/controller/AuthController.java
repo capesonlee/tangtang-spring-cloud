@@ -1,8 +1,9 @@
 package com.lijuyong.startup.controller;
 
-import com.lijuyong.startup.security.JwtUser;
-import com.lijuyong.startup.security.JwtUtil;
-import com.lijuyong.startup.security.User;
+import com.lijuyong.startup.auth.model.JwtUser;
+import com.lijuyong.startup.auth.jwt.JwtUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +26,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+
+    private final Log logger = LogFactory.getLog(this.getClass());
     private String tokenHeader = "Authorization";
     @Value("${jwt.secret}")
     private String secret;
@@ -42,7 +45,7 @@ public class AuthController {
         if (!AuthController.loginname.equals(username)) {
             throw new BadCredentialsException("invalid key");
         }
-        // Perform the security
+        // Perform the auth
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         username,
@@ -50,7 +53,7 @@ public class AuthController {
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        // Reload password post-security so we can generate token
+        // Reload password post-auth so we can generate token
        // final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         JwtUser jwtUser = new JwtUser();
@@ -58,7 +61,7 @@ public class AuthController {
         jwtUser.setId(123456789L);
         jwtUser.setRoleId(9L);
         jwtUser.setOrgId(123L);
-        // Perform the security
+        // Perform the auth
         final String token = jwtTokenUtil.generateToken(jwtUser);
         // Return the token
         // return ResponseEntity.ok(new JwtAuthenticationResponse(token));
@@ -66,6 +69,13 @@ public class AuthController {
         r.put("token", token);
         return r;
     }
+
+//    @RequestMapping(method = RequestMethod.POST, path = "/signin")
+//    public String signin(){
+//
+//        logger.info("here is we signin");
+//        return "hello john";
+//    }
     @RequestMapping("/open")
     public String open(){
         return "奇怪啦";

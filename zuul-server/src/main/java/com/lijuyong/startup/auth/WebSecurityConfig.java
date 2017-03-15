@@ -1,11 +1,14 @@
-package com.lijuyong.startup.security;
+package com.lijuyong.startup.auth;
 
+import com.lijuyong.startup.auth.filter.JwtAuthenticationFilter;
+import com.lijuyong.startup.auth.filter.JwtLoginFilter;
+import com.lijuyong.startup.auth.security.JwtAuthenticationSuccessHandler;
+import com.lijuyong.startup.auth.security.RestAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 /**
  * Created by john on 2017/3/8.
@@ -45,6 +49,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public JwtAuthenticationFilter authenticationTokenFilterBean() throws Exception {
         return new JwtAuthenticationFilter();
     }
+    @Bean
+    public JwtLoginFilter jwtLoginFilterBean() throws Exception {
+        JwtLoginFilter jwtLoginFilter = new JwtLoginFilter("/auth/signin",
+                authenticationManager());
+        jwtLoginFilter.setAuthenticationSuccessHandler(new JwtAuthenticationSuccessHandler());
+        return jwtLoginFilter;
+    }
     @Override
     public void configure(WebSecurity webSecurity) {
 
@@ -60,28 +71,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-
-                //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                // allow anonymous resource requests
-//                .antMatchers(
-//                        HttpMethod.GET,
-//                        "/",
-//                        "/*.html",
-//                        "/favicon.ico",
-//                        "/**/*.html",
-//                        "/**/*.css",
-//                        "/**/*.js"
-//                ).permitAll()
                 .antMatchers("/auth/open").permitAll()
-
                 .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                //.antMatchers(HttpMethod.POST, "/auth/signin").permitAll()
                 .anyRequest().authenticated();
-        // Custom JWT based security filter
+
+
+        //custom login for jwt token generation
+        httpSecurity.addFilterBefore(jwtLoginFilterBean(),
+                UsernamePasswordAuthenticationFilter.class);
+
+        // Custom JWT based auth filter
         httpSecurity
                 .addFilterBefore(authenticationTokenFilterBean(),
                         UsernamePasswordAuthenticationFilter.class);
         // disable page caching
-        System.out.println("应该产生了作用才对");
         httpSecurity.headers().cacheControl();
     }
 }

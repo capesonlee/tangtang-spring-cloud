@@ -1,4 +1,4 @@
-package com.lijuyong.startup.security;
+package com.lijuyong.startup.auth.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -15,5 +15,6 @@ public class JwtAuthenticationSuccessHandler implements AuthenticationSuccessHan
                                         HttpServletResponse response,
                                         Authentication authentication ){
         //do nothing.
+
     }
 }

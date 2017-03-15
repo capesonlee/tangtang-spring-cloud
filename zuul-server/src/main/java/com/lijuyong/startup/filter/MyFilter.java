@@ -37,7 +37,7 @@ public class MyFilter extends ZuulFilter {
 
         mylog.error("shouldFilter "+ requestUri);
 
-        return requestUri.startsWith("/user-service");
+        return requestUri.startsWith("/user-security");
 
     }
 

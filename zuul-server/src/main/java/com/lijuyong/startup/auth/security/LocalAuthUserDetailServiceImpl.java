@@ -1,6 +1,7 @@
-package com.lijuyong.startup.security;
+package com.lijuyong.startup.auth.security;
 
 import com.lijuyong.startup.controller.AuthController;
+import com.lijuyong.startup.auth.model.LocalAuthUser;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,9 +18,11 @@ public class LocalAuthUserDetailServiceImpl implements UserDetailsService {
 
         //调用user-service的接口获取用户的认证信息
         if (!AuthController.loginname.equals(username)) {
-            throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
+            throw new UsernameNotFoundException(String.format("No user found with username '%s'.",
+                    username));
         } else {
-            return new LocalAuthUser(username,AuthController.loginpwd);
+            //差一个user id
+            return new LocalAuthUser(username,AuthController.loginpwd,20110211L);
         }
     }
 }
