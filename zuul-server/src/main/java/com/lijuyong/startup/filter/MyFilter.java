@@ -27,7 +27,7 @@ public class MyFilter extends ZuulFilter {
     @Override
     public int filterOrder() {
         mylog.error("999");
-        return 999;
+        return 1;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class MyFilter extends ZuulFilter {
 
         mylog.error("shouldFilter "+ requestUri);
 
-        return requestUri.startsWith("/user-security");
+        return requestUri.startsWith("/user-service");
 
     }
 
@@ -45,7 +45,7 @@ public class MyFilter extends ZuulFilter {
     public Object run() {
         RequestContext ctx = RequestContext.getCurrentContext();
         ctx.addZuulRequestHeader("payload.trace", "true");
-        mylog.error("run ");
+        mylog.error("run zuul filter");
         return null;
     }
 }

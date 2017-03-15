@@ -35,6 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
+        logger.error("run Authentication filter");
 
         String authToken = jwtTokenAuthenticationService.parseTokenHeader(request);
         if( authToken == null){
