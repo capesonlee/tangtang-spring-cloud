@@ -28,15 +28,6 @@ import java.util.Map;
 public class AuthController {
 
     private final Log logger = LogFactory.getLog(this.getClass());
-    private String tokenHeader = "Authorization";
-    @Value("${jwt.secret}")
-    private String secret;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private JwtUtil jwtTokenUtil;
-    @Autowired
-    private UserDetailsService userDetailsService;
     public static final String loginname = "abcefg";
     public static final String loginpwd_raw = "111";
     public static final String loginpwd = "$2a$10$qsYvMwvld7FMGKp45AQjpun6otC8b.eFN7Be5KAr0vuEQWgT.uvgm";
@@ -44,6 +35,7 @@ public class AuthController {
     @RequestMapping("/open")
     public String open(){
 
+        logger.info("here we have open interface");
         return "这是一个开放测试接口";
     }
 }

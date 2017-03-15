@@ -44,8 +44,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         JwtUser user = jwtTokenUtil.parseToken(authToken);
         logger.info("checking authentication for user " + user.getName());
         UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(user.getId(),user.getRoleId(),null);
-        //这里只需要一个authenticated字段，其他的字段暂时不需要。
+                new UsernamePasswordAuthenticationToken(user,"none",null);
+        //token验证通过，构造的authentication只是为了说明已经登录成功，不需要再到数据库验证。
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);
 
