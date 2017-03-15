@@ -1,9 +1,13 @@
 package com.lijuyong.startup.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lijuyong.startup.auth.model.JwtUser;
+import com.lijuyong.startup.auth.model.LocalAuthUser;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -44,7 +48,18 @@ public class MyFilter extends ZuulFilter {
     @Override
     public Object run() {
         RequestContext ctx = RequestContext.getCurrentContext();
-        ctx.addZuulRequestHeader("payload.trace", "true");
+
+        JwtUser jwtUser = (JwtUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String json = mapper.writeValueAsString(jwtUser);
+            ctx.addZuulRequestHeader("x-youbang-user", json);
+        }
+        catch (Exception ex){
+            mylog.error(ex.getMessage());
+        }
+
         mylog.error("run zuul filter");
         return null;
     }
