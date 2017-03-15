@@ -8,6 +8,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 
 /**
  * Created by john on 2017/3/6.
@@ -18,6 +20,8 @@ public class JwtUtil {
     private static final String ID_KEY_NAME ="id";
     private static final String ORG_ID_KEY_NAME ="org";
     private static final String ROLE_ID_KEY_NAME ="role";
+    private static final Long NORMAL_TOKEN_TTL = 30*60*1000L; //30分钟
+    private static final Long TEMP_TOKEN_TTL = 5*60*1000L;
 
 
     @Value("${jwt.secret}")
@@ -66,6 +70,11 @@ public class JwtUtil {
         claims.put(ID_KEY_NAME, jwtUser.getId() + "");
         claims.put(ROLE_ID_KEY_NAME, jwtUser.getRoleId()+"");
         claims.put(ORG_ID_KEY_NAME, jwtUser.getOrgId()+"");
+        Date timestampNow = new Date();
+        claims.setIssuedAt(timestampNow);
+
+        Date expires = new Date(timestampNow.getTime() + NORMAL_TOKEN_TTL);
+        claims.setExpiration(expires);
 
 
         return Jwts.builder()
