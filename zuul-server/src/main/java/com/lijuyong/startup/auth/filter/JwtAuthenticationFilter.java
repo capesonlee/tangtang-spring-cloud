@@ -40,6 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String authToken = jwtTokenAuthenticationService.parseTokenHeader(request);
         if( authToken == null){
             chain.doFilter(request, response);
+            return;
         }
 
         JwtUser user = jwtTokenUtil.parseToken(authToken);

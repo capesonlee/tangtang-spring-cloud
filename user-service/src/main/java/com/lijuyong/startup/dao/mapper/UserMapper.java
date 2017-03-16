@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 /**
  * Created by john on 2017/3/13.
  */
-@Mapper
+//@Mapper
 public interface UserMapper {
     UserDO getUserById(Long id);
 }

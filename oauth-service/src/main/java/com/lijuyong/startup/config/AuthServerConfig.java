@@ -7,6 +7,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 /**
  * Created by john on 2017/2/26.
  */
+
+
 @Configuration
 public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     @Override
