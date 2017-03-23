@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 public class UserController {
     @Autowired
     private SequenceClient sequenceClient;
+
     @RequestMapping("/hello")
     public String getUserHello(HttpServletRequest request){
         System.out.println(request.getHeader("x-youbang-user"));

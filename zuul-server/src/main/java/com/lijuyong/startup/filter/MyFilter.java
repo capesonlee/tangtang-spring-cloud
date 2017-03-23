@@ -49,16 +49,16 @@ public class MyFilter extends ZuulFilter {
     public Object run() {
         RequestContext ctx = RequestContext.getCurrentContext();
 
-        JwtUser jwtUser = (JwtUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            String json = mapper.writeValueAsString(jwtUser);
-            ctx.addZuulRequestHeader("x-youbang-user", json);
-        }
-        catch (Exception ex){
-            mylog.error(ex.getMessage());
-        }
+//        JwtUser jwtUser = (JwtUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//
+//        ObjectMapper mapper = new ObjectMapper();
+//        try {
+//            String json = mapper.writeValueAsString(jwtUser);
+//            ctx.addZuulRequestHeader("x-youbang-user", json);
+//        }
+//        catch (Exception ex){
+//            mylog.error(ex.getMessage());
+//        }
 
         mylog.error("run zuul filter");
         return null;
