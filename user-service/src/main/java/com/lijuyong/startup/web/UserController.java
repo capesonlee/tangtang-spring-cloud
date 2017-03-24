@@ -1,5 +1,6 @@
 package com.lijuyong.startup.web;
 
+import com.lijuyong.startup.manager.amqp.HelloSender;
 import com.lijuyong.startup.manager.feign.SequenceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 public class UserController {
     @Autowired
     private SequenceClient sequenceClient;
+    @Autowired
+    HelloSender sender;
 
     @RequestMapping("/hello")
     public String getUserHello(HttpServletRequest request){
@@ -26,5 +29,10 @@ public class UserController {
     public Long addNewUser(){
 
         return sequenceClient.applyUserId("John");
+    }
+    @RequestMapping("/sendHello")
+    public String sendHello(){
+        sender.send();
+        return "发送消息成功";
     }
 }

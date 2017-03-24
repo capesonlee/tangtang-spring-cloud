@@ -1,6 +1,6 @@
 package com.lijuyong.startup.auth.security;
 
-import com.lijuyong.startup.controller.AuthController;
+import com.lijuyong.startup.web.AuthController;
 import com.lijuyong.startup.auth.model.LocalAuthUser;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
