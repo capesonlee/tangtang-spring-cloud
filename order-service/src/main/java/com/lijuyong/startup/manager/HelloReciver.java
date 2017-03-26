@@ -13,4 +13,9 @@ public class HelloReciver {
     public void process(String hello) {
         System.out.println("Receiver : " + hello);
     }
+
+    @RabbitListener(queues = "userQueue")
+    public void myMessage(String msg) {
+        System.out.println("message user:" + msg);
+    }
 }

@@ -11,9 +11,6 @@ import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 
 /**
  * Created by john on 2017/3/24.
@@ -26,12 +23,6 @@ public class RabbitConfig {
         return new RabbitAdmin(connectionFactory);
     }
 
-    @Bean
-    Queue queue(RabbitAdmin rabbitAdmin) {
-        Queue queue = new Queue("hello", false);
-        rabbitAdmin.declareQueue(queue);
-        return queue;
-    }
 
     @Bean
     TopicExchange johnTopicExchange(RabbitAdmin rabbitAdmin){
@@ -43,7 +34,7 @@ public class RabbitConfig {
 
     @Bean
     Queue userQueue(RabbitAdmin rabbitAdmin){
-        Queue queue = new Queue("userQueue",true);
+        Queue queue = new Queue("seqQueue",true);
         rabbitAdmin.declareQueue(queue);
         return  queue;
     }
@@ -58,7 +49,7 @@ public class RabbitConfig {
     @Bean
     Binding userQueueBindingToSeq(RabbitAdmin rabbitAdmin,Queue userQueue,TopicExchange johnTopicExchange){
         Binding binding = BindingBuilder.bind(userQueue).to(johnTopicExchange).
-                with("seq.service");
+                with("order.service");
         rabbitAdmin.declareBinding(binding);
         return binding;
     }

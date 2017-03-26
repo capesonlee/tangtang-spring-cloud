@@ -18,4 +18,9 @@ public class HelloSender {
         String context = "Hello John  on " + new Date();
         rabbitTemplate.convertAndSend("hello",context);
     }
+
+    public void sendViaExchange(){
+        String context ="A message from future user service";
+        rabbitTemplate.convertAndSend("john-topic","user.service",context);
+    }
 }

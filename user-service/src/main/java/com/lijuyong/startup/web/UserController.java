@@ -35,4 +35,10 @@ public class UserController {
         sender.send();
         return "发送消息成功";
     }
+
+    @RequestMapping("/exchange")
+    public String exchange(){
+        sender.sendViaExchange();
+        return "no need to sany";
+    }
 }
