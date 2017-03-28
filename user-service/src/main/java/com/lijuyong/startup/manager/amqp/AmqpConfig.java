@@ -6,6 +6,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitMessagingTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
@@ -14,7 +15,7 @@ import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 /**
  * Created by john on 2017/3/24.
  */
-
+@EnableRabbit
 @Configuration
 public class AmqpConfig {
 
@@ -25,18 +26,18 @@ public class AmqpConfig {
     }
 
     @Bean
-    public MappingJackson2MessageConverter jackson2Converter() {
-        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-        return converter;
+    public Jackson2JsonMessageConverter producerJackson2MessageConverter() {
+        return new Jackson2JsonMessageConverter();
     }
 
     @Bean
-    public RabbitMessagingTemplate rabbitMessagingTemplate(RabbitTemplate rabbitTemplate) {
-        RabbitMessagingTemplate rabbitMessagingTemplate = new RabbitMessagingTemplate();
-        rabbitMessagingTemplate.setMessageConverter(jackson2Converter());
-        rabbitMessagingTemplate.setRabbitTemplate(rabbitTemplate);
-        return rabbitMessagingTemplate;
+    public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
+        final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setMessageConverter(producerJackson2MessageConverter());
+        return rabbitTemplate;
     }
+
+
 
 
 

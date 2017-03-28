@@ -35,7 +35,7 @@ public class HelloSender {
         userDTO.setName("Lijuyong");
         userDTO.setOrdId("villia");
 
-        rabbitMessagingTemplate.convertAndSend("john-topic",routingKey,userDTO);
+        rabbitTemplate.convertAndSend("john-topic",routingKey,userDTO);
     }
 
 }
