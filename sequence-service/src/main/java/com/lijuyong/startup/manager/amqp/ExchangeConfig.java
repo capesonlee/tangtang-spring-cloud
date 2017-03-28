@@ -1,10 +1,6 @@
 package com.lijuyong.startup.manager.amqp;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
-import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,33 +10,33 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ExchangeConfig {
     @Bean
-    TopicExchange johnTopicExchange(RabbitAdmin rabbitAdmin){
+    TopicExchange johnTopicExchange(AmqpAdmin amqpAdmin){
         TopicExchange topicExchange =
                 new TopicExchange("john-topic",true,true);
-        rabbitAdmin.declareExchange(topicExchange);
+        amqpAdmin.declareExchange(topicExchange);
         return  topicExchange;
     }
 
     @Bean
-    Queue userQueue(RabbitAdmin rabbitAdmin){
+    Queue userQueue(AmqpAdmin amqpAdmin){
         Queue queue = new Queue("seqQueue",true);
-        rabbitAdmin.declareQueue(queue);
+        amqpAdmin.declareQueue(queue);
         return  queue;
     }
 
 
     @Bean
-    Binding userQueueBindingToOrder(RabbitAdmin rabbitAdmin, Queue userQueue, TopicExchange johnTopicExchange){
+    Binding userQueueBindingToOrder(AmqpAdmin amqpAdmin, Queue userQueue, TopicExchange johnTopicExchange){
         Binding binding = BindingBuilder.bind(userQueue).to(johnTopicExchange).
                 with("user.service");
-        rabbitAdmin.declareBinding(binding);
+        amqpAdmin.declareBinding(binding);
         return binding;
     }
     @Bean
-    Binding userQueueBindingToSeq(RabbitAdmin rabbitAdmin,Queue userQueue,TopicExchange johnTopicExchange){
+    Binding userQueueBindingToSeq(AmqpAdmin amqpAdmin,Queue userQueue,TopicExchange johnTopicExchange){
         Binding binding = BindingBuilder.bind(userQueue).to(johnTopicExchange).
                 with("order.service");
-        rabbitAdmin.declareBinding(binding);
+        amqpAdmin.declareBinding(binding);
         return binding;
     }
 
