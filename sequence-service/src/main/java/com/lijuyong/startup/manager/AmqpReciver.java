@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lijuyong.startup.manager.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,10 +23,14 @@ public class AmqpReciver {
 //    }
 
     @RabbitListener(queues = "seqQueue")
-    public void objectMessage(UserDTO msg) {
+    public void objectMessage(@Payload UserDTO msg, @Header("my-header") String my_header, Message message) {
         System.out.println("message user:" + msg.getName());
-        ObjectMapper mapper = new ObjectMapper();
+        String myHeader =(String) message.getMessageProperties().getHeaders().get("my-header");
+
+        logger.info("Here is my header:" + myHeader );
+        logger.info("my header from annotation:" +my_header);
         try{
+            ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(msg);
             logger.info("here is the message recived: " + json);
         }

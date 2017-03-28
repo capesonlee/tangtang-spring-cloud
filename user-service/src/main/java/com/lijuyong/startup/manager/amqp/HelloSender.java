@@ -2,6 +2,8 @@ package com.lijuyong.startup.manager.amqp;
 
 import com.lijuyong.startup.manager.dto.UserDTO;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.rabbit.core.RabbitMessagingTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,7 +37,10 @@ public class HelloSender {
         userDTO.setName("Lijuyong");
         userDTO.setOrdId("villia");
 
-        rabbitTemplate.convertAndSend("john-topic",routingKey,userDTO);
+        Message message = MessageBuilder.withBody("foo".getBytes()).build();
+
+
+        rabbitTemplate.convertAndSend("john-topic",routingKey,userDTO,new MyMessagePostProcessor());
     }
 
 }
