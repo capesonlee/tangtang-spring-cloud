@@ -38,7 +38,13 @@ public class UserController {
 
     @RequestMapping("/exchange")
     public String exchange(){
-        sender.sendViaExchange();
+        sender.sendViaExchange("order.service");
+        sender.sendViaExchange("user.service");
         return "no need to sany";
+    }
+    @RequestMapping("/sendobject")
+    public String sendObject(){
+        sender.sendObjectViaExchange("order.service");
+        return "succeeds";
     }
 }
